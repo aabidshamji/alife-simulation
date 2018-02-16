@@ -1,15 +1,9 @@
 package alife_sim;
 
 abstract class Organism {
-
-	String type;
-	int energy;
-	boolean cooperates;
-	int cooperationProbability;
 	
-	Organism() {
-		
-	}
+	
+	int energy;
 	
 	public int getEnergy() {
 		return this.energy;
@@ -36,85 +30,78 @@ abstract class Organism {
 	abstract boolean cooperates();
 	
 	class Cooperator extends Organism {
-
-		@Override
+		
+		Cooperator(){
+			this.energy = 0;
+		}
+			
 		String getType() {
-			// TODO Auto-generated method stub
-			return null;
+			return "Cooperator";
 		}
 
-		@Override
+		
 		Organism reproduce() {
-			// TODO Auto-generated method stub
-			return null;
+			return new Cooperator();
 		}
 
-		@Override
+		
 		double getCooperationProbability() {
-			// TODO Auto-generated method stub
-			return 0;
+			return 1;
 		}
 
-		@Override
+		
 		boolean cooperates() {
-			// TODO Auto-generated method stub
-			return false;
+			return true;
 		}
 		
 	}
 	
 	class Defector extends Organism {
-
-		@Override
+		
+		Defector(){
+			this.energy = 0;
+		}
+			
 		String getType() {
-			// TODO Auto-generated method stub
-			return null;
+			return "Defector";
 		}
 
-		@Override
+		
 		Organism reproduce() {
-			// TODO Auto-generated method stub
-			return null;
+			return new Defector();
 		}
 
-		@Override
+		
 		double getCooperationProbability() {
-			// TODO Auto-generated method stub
 			return 0;
 		}
 
-		@Override
+		
 		boolean cooperates() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 		
 	}
 	
 	class PartialCooperator extends Organism {
-
-		@Override
+		
 		String getType() {
-			// TODO Auto-generated method stub
-			return null;
+			return "PartialCooperator";
 		}
 
-		@Override
+		
 		Organism reproduce() {
-			// TODO Auto-generated method stub
-			return null;
+			return new PartialCooperator();
 		}
 
-		@Override
+		
 		double getCooperationProbability() {
-			// TODO Auto-generated method stub
-			return 0;
+			return 0.5;
 		}
 
-		@Override
+		
 		boolean cooperates() {
-			// TODO Auto-generated method stub
-			return false;
+			return true;
 		}
 		
 	}
