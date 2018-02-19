@@ -1,9 +1,9 @@
 package alife_sim;
 
-abstract class Organism {
+public abstract class Organism {
 	
 	
-	int energy;
+	protected int energy;
 	
 	public int getEnergy() {
 		return this.energy;
@@ -29,6 +29,8 @@ abstract class Organism {
 	abstract double getCooperationProbability(); 
 	abstract boolean cooperates();
 	
+}
+	
 	class Cooperator extends Organism {
 		
 		Cooperator(){
@@ -41,6 +43,7 @@ abstract class Organism {
 
 		
 		Organism reproduce() {
+			this.energy -= 10;
 			return new Cooperator();
 		}
 
@@ -68,6 +71,7 @@ abstract class Organism {
 
 		
 		Organism reproduce() {
+			this.energy -= 10;
 			return new Defector();
 		}
 
@@ -91,6 +95,7 @@ abstract class Organism {
 
 		
 		Organism reproduce() {
+			this.energy -= 10;
 			return new PartialCooperator();
 		}
 
@@ -106,4 +111,4 @@ abstract class Organism {
 		
 	}
 	
-}
+
