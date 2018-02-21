@@ -4,23 +4,24 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Population {
 	
+	public Random randomGenerator;
+	
 	CopyOnWriteArrayList<Organism> organismArr = new CopyOnWriteArrayList<Organism>();
 	
-	Population(Map<String, Integer> counts) throws IllegalArgumentException {
-		
+	Population(Map<String, Integer> counts, Random randomGenerator) throws IllegalArgumentException {
 		for (String key : counts.keySet()) {
-			if (key != "Cooperator" || key != "Defector" || key != "PartialCooperator") {
-				throw new IllegalArgumentException("Invalid key in map: " + key);
+			if ( !key.equals("Defector") && !key.equals("Cooperator") && !key.equals("PartialCooperator")) {
+				throw new IllegalArgumentException("Invalid key in map: " + key); 
 			}
 		}
-		
+		this.randomGenerator = randomGenerator;
 		int numCooperator = counts.get("Cooperator");
 		int numDefector = counts.get("Defector");
 		int numPartialCooperator = counts.get("PartialCooperator");
 		
 		addToList(new Cooperator(), numCooperator, organismArr);
 		addToList(new Defector(), numDefector, organismArr);
-		addToList(new PartialCooperator(), numPartialCooperator, organismArr);
+		addToList(new PartialCooperator(randomGenerator), numPartialCooperator, organismArr);
 	}
 	
 	
@@ -30,33 +31,45 @@ public class Population {
 			num--;
 		}
 	}
-	
+
 	void Update() {
-		Random randomGenerator = new Random();
+
 		Iterator<Organism> itr = organismArr.iterator();
+		int index = 0;
 		
 		while (itr.hasNext()) {
-			if (itr.next().getEnergy() >= 10) {
-				Organism newOrg = itr.next().reproduce();
+			Organism curr = itr.next();
+			if (curr.getEnergy() >= 10) {
+				Organism newOrg = curr.reproduce();
 				int repLoc = randomGenerator.nextInt(organismArr.size());
 				organismArr.set(repLoc, newOrg);
 			} else {
-				itr.next().incrementEnergy();
+				curr.incrementEnergy();
+				if (curr.cooperates()) {
+					for (int i = 0; i < 8; i++) {
+						int repLoc;
+						do {
+							repLoc = randomGenerator.nextInt(organismArr.size());
+						} while (repLoc == index);
+						organismArr.get(repLoc).incrementEnergy();
+					}
+					curr.decrementEnergy();
+				}
 			}
+			index++;
 		}
 
 	}
-	
+
 	double calculateCooperationMean() {
 		Iterator<Organism> itr = organismArr.iterator();
 		int count = 0;
 		double total = 0;
-		
+
 		while (itr.hasNext()) {
 			count++;
 			total += itr.next().getCooperationProbability();
 		}
-		
 		return total / count;
 	}
 	
@@ -69,13 +82,14 @@ public class Population {
 		int countPartialCooperator = 0;
 		
 		while (itr.hasNext()) {
-			if (itr.next().getType().equals("Cooperator")) {
+			Organism curr = itr.next();
+			if (curr.getType().equals("Cooperator")) {
 				countCooperator++;
 			}
-			else if (itr.next().getType().equals("Defector")) {
+			else if (curr.getType().equals("Defector")) {
 				countDefector++;
 			}
-			else if (itr.next().getType().equals("PartialCooperator")) {
+			else if (curr.getType().equals("PartialCooperator")) {
 				countPartialCooperator++;
 			}
 		}
