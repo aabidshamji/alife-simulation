@@ -48,6 +48,7 @@ public class ALifeSim {
 		/*
 		 * prints the key value pairs and the Mean Cooperation Probability from the newCounts map
 		 */
+		System.out.println("After " + iterations + " ticks:");
 		newCounts.forEach((key, value)-> System.out.println(key + " = " + value));
 		System.out.println("Mean Cooperation Probability = " + MCP);
 		
