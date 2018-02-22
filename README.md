@@ -1,7 +1,7 @@
 # alife-simulation-marty-and-aabid
 alife-simulation-marty-and-aabid created by GitHub Classroom
 
-*references*
+**References**
 
 https://www.journaldev.com/378/java-util-concurrentmodificationexception
 
